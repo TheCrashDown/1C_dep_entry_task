@@ -54,7 +54,9 @@ void find_accurate(int pattern_n, int pattern_m, int img_n, int img_m, matrix& p
 }
 
 void find_approximate(int pattern_n, int pattern_m, int img_n, int img_m, matrix& pattern, matrix& img){
-    //  ищем каждую строку паттерна в каждой строке изображения. Работает это за куб.
+	// same code as in previous
+
+	//  ищем каждую строку паттерна в каждой строке изображения. Работает это за куб.
     std::vector< std::vector< std::vector< int > > > matches;
     matches.resize(img_n);
     for(int i = 0; i < img_n; ++i) {
@@ -70,13 +72,26 @@ void find_approximate(int pattern_n, int pattern_m, int img_n, int img_m, matrix
     //  ищем по матрице найденных совпадений строк вхождения паттерна в изображение. Так как
     //  мы уже получили куб в асимптотике, тут не будем заморачиваться и просто наивно пройдемся за тот же куб.
 
+    /*for(int i = 0; i < matches.size(); ++i){
+        for(int j = 0; j < matches[i].size(); ++j){
+            for(int k = 0; k < matches[i][j].size(); ++k){
+                std::cout << matches[i][j][k] << ",";
+            }
+            std::cout << " ";
+        }
+        std::cout << "\n";
+    }*/
+
     for(int i = 0; i < img_n - pattern_n + 1; ++i){
         std::vector< int > possible = matches[i][0];
         int j = 1;
         while(possible.size() > 0 && j < pattern_n){
-            for(int k = 0; k < possible.size(); ++k){
+            int k = 0;
+            while(k < possible.size()){
                 if(std::find(matches[i][j].begin(), matches[i][j].end(), possible[k]) == matches[i][j].end()){
                     possible.erase(possible.begin() + k);
+                } else{
+                    ++k;
                 }
             }
             ++j;
@@ -85,7 +100,6 @@ void find_approximate(int pattern_n, int pattern_m, int img_n, int img_m, matrix
             std::cout << "FOUND PATTERN on " << i << " " << possible[k] << "\n";
         }
     }
-
 }
 
 
